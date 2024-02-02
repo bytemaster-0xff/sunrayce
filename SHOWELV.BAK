@@ -1,0 +1,105 @@
+unit SHOWELV;
+interface
+procedure DISPLAY_ELEVATION;
+implementation
+uses GRAPH,DOS,CRT;
+procedure DISPLAY_ELEVATION;
+type
+   ROAD_DATA = record
+        MILE : integer;
+       GRADE : real;
+LENGTH_GRADE : real;
+          end;
+
+var
+   ROAD_FILE : file of ROAD_DATA;
+   ROAD : ROAD_DATA;
+   TEMP : ROAD_DATA;
+   GRAPH_DRIVER : integer;
+   GRAPH_MODE : integer;
+   wait : char;
+   x : integer;
+    Y1,Y2 : integer;
+    CURRENT_MILE : integer;
+
+begin
+  clrscr;
+  write('Enter the current Mile ==>');
+  readln(CURRENT_MILE);
+  if (CURRENT_MILE >50) and (CURRENT_MILE <= 50) then Current_mile := CURRENT_MILE - 50;
+  if (CURRENT_MILE >100) and (CURRENT_MILE <= 150) then Current_mile := CURRENT_MILE - 100;
+  if (CURRENT_MILE >150) and (CURRENT_MILE <= 200) then Current_mile := CURRENT_MILE - 150;
+  Current_MILE := CURRENT_MILE * 12;
+  GRAPH_DRIVER := detect;
+  initgraph(GRAPH_DRIVER,GRAPH_MODE,'DRIVER');
+  assign(ROAD_FILE,'A:ROAD.DAT');
+  reset(ROAD_FILE);
+  y1:=40;Y2 := 40;
+  line(0,0,637,0);
+  line(0,0,0,200);
+  line(0,200,637,200);
+  line(637,200,637,0);
+  line(CURRENT_MILE,0,CURRENT_MILE,200);
+  outtextxy(250,190,'Elevation Vs Mile');
+  outtextxy(5,150,'0');
+  outtextxy(610,150,'50');
+  read (ROAD_FILE,ROAD);
+  begin
+  for x := 1 to 50 do
+  begin
+      if x = ROAD.MILE then
+      begin
+         Y2 := Y2 + round(50*ROAD.GRADE*0.9/ROAD.LENGTH_GRADE);
+         if not eof(ROAD_FILE) then read(ROAD_FILE,ROAD)
+         else ROAD.MILE := 400;
+      end;
+      line(x*12,200-y1,(x*12)+12,200-Y2);
+      Y1 := Y2;
+  end;
+  outtextxy(5,115,'51');
+  outtextxy(610,115,'100');
+  Y1 := 75 ; Y2 := 75;
+  for x := 51 to 100 do
+  begin
+      if x = ROAD.MILE then
+      begin
+         Y2 := Y2 + round(50*ROAD.GRADE*0.9/ROAD.LENGTH_GRADE);
+         if not eof(ROAD_FILE) then read(ROAD_FILE,ROAD)
+         else ROAD.MILE := 400;
+      end;
+      line((x-50)*12,200-y1,(x-50)*12+12,200-Y2);
+      Y1 := Y2;
+  end;
+  outtextxy(5,70,'101');
+  outtextxy(610,70,'150');
+  Y1 := 120; Y2:= 120;
+  for x := 101 to 150 do
+  begin
+      if x = ROAD.MILE then
+      begin
+         Y2 := Y2 + round(50*ROAD.GRADE*0.9/ROAD.LENGTH_GRADE);
+         if not eof(ROAD_FILE) then read(ROAD_FILE,ROAD)
+         else ROAD.MILE := 400;
+      end;
+      line((x-100)*12,200-y1,(x-100)*12+12,200-Y2);
+      Y1 := Y2;
+  end;
+  outtextxy(5,25,'151');
+  outtextxy(610,25,'200');
+  Y1 := 165; Y2 := 165;
+  for x := 151 to 200 do
+  begin
+      if x = ROAD.MILE then
+      begin
+         Y2 := Y2 + round(50*ROAD.GRADE*0.9/ROAD.LENGTH_GRADE);
+         if not eof(ROAD_FILE) then read(ROAD_FILE,ROAD)
+         else ROAD.MILE := 400;
+      end;
+      line((x-150)*12,200-y1,(x-150)*12+12,200-Y2);
+      Y1 := Y2;
+  end;
+end;
+read(WAIT);
+closegraph;
+end;
+end.
